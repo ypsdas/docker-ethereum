@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-let endpoint = "http://localhost:4000";
+let endpoint = "http://13.232.151.3:4000";
 
 class Message extends Component {
     
