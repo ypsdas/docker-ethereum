@@ -6,12 +6,14 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 034362044754.dkr.ecr.ap-south-1.amazonaws.com
       - REPO_URI=034362044754.dkr.ecr.ap-south-1.amazonaws.com/eth-project
+
   build:
     commands:
       - echo Building Docker images...
       - docker build -t $REPO_URI:ganache-latest -f Dockerfile.ganache .
       - docker build -t $REPO_URI:dapp-latest .
       - docker build -t $REPO_URI:react-latest -f client/Dockerfile ./client
+
   post_build:
     commands:
       - echo Pushing Docker images to Amazon ECR...
@@ -19,4 +21,10 @@ phases:
       - docker push $REPO_URI:dapp-latest
       - docker push $REPO_URI:react-latest
       - echo Build completed successfully.
+      - echo "Creating artifact file..."
+      - echo "Build successful - Images pushed to ECR" > build-output.txt
 
+artifacts:
+  files:
+    - build-output.txt
+  name: docker-build-artifact
